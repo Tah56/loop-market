@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
+
 export default function RegisterPage() {
   const router = useRouter()
   const [formData, setFormData] = useState({
@@ -50,6 +51,7 @@ export default function RegisterPage() {
         password: formData.password,
         role: formData.role,
         phone: formData.phone,
+        location:formData.location
         // You can pass location if your backend supports it
         // location: formData.location,
       });
@@ -120,7 +122,7 @@ export default function RegisterPage() {
                 I want to register as
               </label>
               <div className="grid grid-cols-2 gap-4">
-                <label className="flex items-center gap-3 border border-gray-200 rounded-2xl px-5 py-4 cursor-pointer hover:border-purple-500 transition-all has-[:checked]:border-purple-600 has-[:checked]:bg-purple-50">
+                <label className="flex items-center gap-3 border border-gray-200 rounded-2xl px-5 py-4 cursor-pointer hover:border-purple-500 transition-all has-checked:border-purple-600 has-checked:bg-purple-50">
                   <input
                     type="radio"
                     name="role"
@@ -136,7 +138,7 @@ export default function RegisterPage() {
                   </div>
                 </label>
 
-                <label className="flex items-center gap-3 border border-gray-200 rounded-2xl px-5 py-4 cursor-pointer hover:border-purple-500 transition-all has-[:checked]:border-purple-600 has-[:checked]:bg-purple-50">
+                <label className="flex items-center gap-3 border border-gray-200 rounded-2xl px-5 py-4 cursor-pointer hover:border-purple-500 transition-all has-checked:border-purple-600 has-checked:bg-purple-50">
                   <input
                     type="radio"
                     name="role"
@@ -254,7 +256,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Right Side - Welcome */}
-        <div className="hidden md:flex w-full md:w-1/2 bg-gradient-to-br from-purple-600 to-purple-700 text-white items-center justify-center p-12 relative overflow-hidden">
+        <div className="hidden md:flex w-full md:w-1/2 bg-linear-to-br from-purple-600 to-purple-700 text-white items-center justify-center p-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(at_30%_20%,rgba(255,255,255,0.15)_0%,transparent_50%)]" />
           
           <div className="relative text-center z-10">

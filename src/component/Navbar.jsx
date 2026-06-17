@@ -9,7 +9,8 @@ import CustomTrigger from "./DropDown";
 export default function AppNavbar() {
   const { data } = authClient.useSession();
   const user = data?.user;
-  console.log(user);
+  const role = data?.user.role
+  console.log(user,role);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -93,7 +94,7 @@ export default function AppNavbar() {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-4">
-            {user && (
+            {user && role ==="seller" && (
               <Link
                 href="/sell"
                 className="hidden md:inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 dark:text-blue-400 dark:hover:bg-blue-950 rounded-full transition-colors"

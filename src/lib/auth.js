@@ -19,6 +19,14 @@ export const auth = betterAuth({
         type: "string",
         defaultValue: "buyer",
       },
+      location: {
+        type: "string",
+       
+      },
+      phone: {
+        type: "string",
+        
+      },
     },
   },
 });
