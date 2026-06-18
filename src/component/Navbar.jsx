@@ -16,7 +16,7 @@ export default function AppNavbar() {
 
   const menuItems = [
     { label: "Home", href: "/" },
-    { label: "Browse Items", href: "/products" },
+    { label: "Browse Items", href: "/allproduct" },
     { label: "Categories", href: "/categories" },
     { label: "About Us", href: "/about" },
   ];
@@ -86,7 +86,7 @@ export default function AppNavbar() {
               </Link>
             ))}
             {
-                user && <Link href={'/dashboard'} className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">
+                user && <Link href={`/dashboard/${user.role}`} className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors">
                     Dashboard
                 </Link>
             }
@@ -96,7 +96,7 @@ export default function AppNavbar() {
           <div className="flex items-center gap-4">
             {user && role ==="seller" && (
               <Link
-                href="/sell"
+                href="/dashboard/seller"
                 className="hidden md:inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 dark:text-blue-400 dark:hover:bg-blue-950 rounded-full transition-colors"
               >
                 + Sell Item
