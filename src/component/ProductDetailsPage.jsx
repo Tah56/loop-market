@@ -2,9 +2,12 @@
 
 import React, { useState } from "react";
 import { Button } from "@heroui/react";
+import Image from "next/image";
 
-export default function ProductDetailsPage() {
+export default function ProductDetailsPage({data}) {
   // State management for active preview image thumbnails
+  console.log(data);
+  
   const [activeImage, setActiveImage] = useState("main");
   
   // State management for individual FAQ accordion triggers
@@ -89,10 +92,12 @@ export default function ProductDetailsPage() {
           <div className="space-y-4">
             {/* Main Stage Image View Screen */}
             <div className="w-full aspect-square bg-[#F1F5F9] rounded-2xl flex items-center justify-center p-8 border border-zinc-200/30 overflow-hidden">
-              <img
-                src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=800&auto=format&fit=crop"
+              <Image
+                src={data.mainImage}
                 alt="Product Showcase View"
                 className="w-4/5 h-4/5 object-contain mix-blend-multiply drop-shadow-xl"
+                width={200}
+                height={200}
               />
             </div>
             
@@ -112,7 +117,7 @@ export default function ProductDetailsPage() {
                   }`}
                 >
                   <div className="w-full aspect-square flex items-center justify-center p-1">
-                    <img src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=150&auto=format&fit=crop" className="object-contain max-h-full mix-blend-multiply" />
+                    <img src={data.mainImage} className="object-contain max-h-full mix-blend-multiply" />
                   </div>
                   <span className="text-[10px] font-bold text-zinc-400 mt-1 block truncate w-full text-center">{thumb.label}</span>
                 </button>
@@ -123,8 +128,8 @@ export default function ProductDetailsPage() {
           {/* Right Side: Metadata Configuration & Actions Panel */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-4xl font-black tracking-tight text-[#0F172A]">{product.title}</h1>
-              <p className="text-sm font-semibold text-zinc-500 mt-1">{product.subtitle}</p>
+              <h1 className="text-4xl font-black tracking-tight text-[#0F172A]">{data.title}</h1>
+              <p className="text-sm font-semibold text-zinc-500 mt-1">{data.subtitle}</p>
             </div>
 
             {/* Ratings Summary Inline Block */}
@@ -140,9 +145,9 @@ export default function ProductDetailsPage() {
 
             {/* Pricing Section Stack */}
             <div className="space-y-1">
-              <span className="text-xs font-bold text-zinc-400 line-through">${product.originalPrice.toFixed(2)}</span>
+              <span className="text-xs font-bold text-zinc-400 line-through"></span>
               <div className="flex items-center gap-3">
-                <span className="text-4xl font-black tracking-tight text-[#FF7A00]">${product.price.toFixed(2)}</span>
+                <span className="text-4xl font-black tracking-tight text-[#FF7A00]">${data.price}</span>
                 <span className="bg-[#E2FBE9] text-[#059669] text-xs font-bold px-2.5 py-1 rounded-md">
                   Save ${product.savings}
                 </span>
@@ -151,7 +156,7 @@ export default function ProductDetailsPage() {
 
             {/* Product Body Summary Content Copy */}
             <p className="text-sm text-zinc-500 font-medium leading-relaxed">
-              {product.description}
+              {data.description}
             </p>
 
             {/* Interactive Functional Conversion Buttons Stack */}
@@ -183,29 +188,7 @@ export default function ProductDetailsPage() {
           </div>
         </div>
 
-        {/* 3. Section: Feature Highlights Matrix Blocks */}
-        <div className="border-t border-zinc-200 pt-12 space-y-8">
-          <h2 className="text-center text-xl font-black tracking-wider uppercase text-zinc-400">
-            Why Aeroflow Max?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { icon: "🔊", title: "Premium Sound", text: "Premium sound and toetries and quite headphones" },
-              { icon: "🎛️", title: "Advanced ANC", text: "Advanced ant noise cancelling and urable comfort." },
-              { icon: "🍃", title: "Lightweight Design", text: "Lightweight design, to darmate and mon-cansation" },
-            ].map((feature, i) => (
-              <div key={i} className="flex items-start gap-4 p-5 bg-white border border-zinc-200/60 rounded-xl shadow-2xs">
-                <div className="bg-[#F1F5F9] w-12 h-12 rounded-lg flex items-center justify-center text-lg shrink-0">
-                  {feature.icon}
-                </div>
-                <div>
-                  <h4 className="text-sm font-black text-[#0F172A]">{feature.title}</h4>
-                  <p className="text-xs font-medium text-zinc-400 leading-relaxed mt-1">{feature.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+       
 
         {/* 4. Section: Customer Reviews Board Panel */}
         <div className="border-t border-zinc-200 pt-12 space-y-8">

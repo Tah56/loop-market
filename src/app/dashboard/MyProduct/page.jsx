@@ -1,3 +1,4 @@
+import MyProductCard from '@/component/MyProductSection';
 import ProductCard from '@/component/ProductCard';
 import React from 'react';
 
@@ -8,7 +9,7 @@ console.log(data);
 
     return (
         <div className='grid grid-cols-3 p-3'>
-            <ProductCard data={data}></ProductCard>
+            <MyProductCard data={data}></MyProductCard>
         </div>
     );
 };
