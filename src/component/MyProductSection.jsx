@@ -90,7 +90,7 @@ export default function MyProductCard({ data }) {
                 Add to Cart
               </Button>
                   </Link>
-                 <Link href={`/dashboard/edit-product/${product._id}`}>
+                 <Link href={`/dashboard/seller/edit-product/${product._id}`}>
               <Button
                 onClick={handleAddToCart}
                 className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-sm tracking-wide rounded-xl py-6 transition-colors mt-auto"
@@ -103,7 +103,7 @@ export default function MyProductCard({ data }) {
                   </svg>
                 }
                 >
-                Add to Cart
+            Edit Product 
               </Button>
                   </Link>
                     <Delete></Delete>

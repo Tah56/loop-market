@@ -145,7 +145,7 @@ export default function AddProductPage({user}) {
       
 
       toast.success("Product submitted successfully! Awaiting admin review.");
-      router.push("/dashboard/MyProduct")
+      router.push("/dashboard/seller/MyProduct")
       
 
       // Reset form after success

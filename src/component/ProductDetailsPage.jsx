@@ -163,7 +163,7 @@ export default function ProductDetailsPage({data}) {
             <div className="space-y-3 pt-2">
               <Button 
                 onClick={handleAddToCart}
-                className="w-full bg-[#FF7A00] hover:bg-[#E66E00] text-white font-bold tracking-wide rounded-xl py-6.5 text-sm transition-colors shadow-xs"
+                className="w-full bg-[#145efc] hover:bg-[#145efc]/ text-white font-bold tracking-wide rounded-xl py-6.5 text-sm transition-colors shadow-xs"
               >
                 ADD TO CART
               </Button>

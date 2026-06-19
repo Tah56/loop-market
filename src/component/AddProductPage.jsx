@@ -21,6 +21,7 @@ export default function AddProductPage({user}) {
     price: '',
     stock: '1',
     description: '',
+    status: 'pending'
   });
 
   const [images, setImages] = useState([]);

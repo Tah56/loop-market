@@ -1,19 +1,59 @@
 
 
+import { auth } from "@/lib/auth";
 import {Bars, Bell, Envelope, Gear, House, Magnifier, Person} from "@gravity-ui/icons";
 import {Button, Drawer} from "@heroui/react";
-import { BoxIcon, ChartAreaIcon, LayoutDashboard, PlusIcon, ShoppingBag } from "lucide-react";
+import { BarChart3, BoxIcon, ChartAreaIcon, LayoutDashboard, Package, Plus, PlusIcon, ShoppingBag, ShoppingCart, Users } from "lucide-react";
+import { headers } from "next/headers";
 import Link from "next/link";
 
-export function Navigation() {
-  const navItems = [
+export async function Navigation () {
+  
+const user = await auth.api.getSession({
+    headers: await headers() // you need to pass the headers object.
+})
+console.log(user);
+
+  const navItems  = user?.user?.role ==="seller"
+?    [
     {icon: LayoutDashboard, href:"/", label: "Overview"},
-    {icon: PlusIcon,href:"/dashboard/addProduct", label: "Add Product"},
-    {icon: BoxIcon,href:"/dashboard/MyProduct", label: "My Product"},
+    {icon: PlusIcon,href:"/dashboard/seller/addProduct", label: "Add Product"},
+    {icon: BoxIcon,href:"/dashboard/seller/MyProduct", label: "My Product"},
     {icon: ShoppingBag,href:"/", label: "Oders"},
     {icon: ChartAreaIcon,href:"/", label: "Analytics"},
     {icon: Person,href:"/", label: "Profile"},
-  ];
+  ]:user?.user?.role ==="admin"?[
+  {
+    icon: LayoutDashboard,
+    href: "/dashboard/admin",
+    label: "Overview"
+  },
+  {
+    icon: Plus,
+    href: "/dashboard/add-product",
+    label: "Add Product"
+  },
+  {
+    icon: Package,
+    href: "/dashboard/admin/allproducts",
+    label: "All Products"
+  },
+  {
+    icon: Users,
+    href: "/dashboard/users",           // or "/dashboard/buyers" if needed
+    label: "Users"
+  },
+  {
+    icon: ShoppingCart,
+    href: "/dashboard/orders",
+    label: "Orders"
+  },
+  {
+    icon: BarChart3,
+    href: "/dashboard/analytics",
+    label: "Analytics"
+  },
+]:[];
   const navLinks =  <nav className="flex flex-col gap-1">
                 {navItems.map((item) => (
                     <Link key={item.label} href={item.href}>

@@ -1,6 +1,7 @@
 'use client';
 
 import { authClient } from '@/lib/auth-client';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -248,9 +249,9 @@ export default function RegisterPage() {
             {/* Login Link */}
             <p className="text-center text-gray-600 text-sm">
               Already have an account?{' '}
-              <a href="#" className="text-purple-600 hover:text-purple-700 font-medium">
+              <Link href="/auth/singIn" className="text-purple-600 hover:text-purple-700 font-medium">
                 LOGIN
-              </a>
+              </Link>
             </p>
           </form>
         </div>
