@@ -12,7 +12,7 @@ export async function Navigation () {
 const user = await auth.api.getSession({
     headers: await headers() // you need to pass the headers object.
 })
-console.log(user);
+console.log();
 
   const navItems  = user?.user?.role ==="seller"
 ?    [
