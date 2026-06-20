@@ -87,6 +87,7 @@ export default function ManageProducts() {
 
       if (res.ok) {
         toast.success(
+        
           `${action.charAt(0).toUpperCase() + action.slice(1)}d successfully!`,
         );
         fetchProducts(); // Refresh list

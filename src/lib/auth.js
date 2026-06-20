@@ -27,6 +27,9 @@ export const auth = betterAuth({
         type: "string",
         
       },
+      status:{
+        defaultValue:"pending"
+      }
     },
   },
 });

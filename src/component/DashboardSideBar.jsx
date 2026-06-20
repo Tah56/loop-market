@@ -40,7 +40,7 @@ console.log();
   },
   {
     icon: Users,
-    href: "/dashboard/users",           // or "/dashboard/buyers" if needed
+    href: "/dashboard/admin/user",           // or "/dashboard/buyers" if needed
     label: "Users"
   },
   {
