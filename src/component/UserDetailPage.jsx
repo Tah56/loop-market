@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { Search, UserX, Eye, UserCheck } from 'lucide-react';
+import { Search, UserX, Eye, UserCheck, UserCheck as UnblockIcon } from 'lucide-react';
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -11,10 +11,10 @@ export default function ManageUsers() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
 
-  // Current logged-in admin (This should come from your auth context later)
   const currentAdminEmail = "admin@gmail.com";
 
   const API_BASE = process.env.NEXT_PUBLIC_API || 'http://localhost:5000/api';
+console.log(users);
 
   useEffect(() => {
     fetchUsers();
@@ -37,7 +37,6 @@ export default function ManageUsers() {
     }
   };
 
-  // Mock Data
   const mockUsers = [
     { _id: 1, name: "Admin User", email: "admin@loopmarket.com", role: "Admin", status: "active", location: "San Francisco, CA" },
     { _id: 2, name: "Alex Rivera", email: "seller1@loopmarket.com", role: "Seller", status: "active", location: "New York, NY" },
@@ -62,27 +61,39 @@ export default function ManageUsers() {
   const isCurrentAdmin = (user) => user.email === currentAdminEmail;
 
   const handleAction = async (action, user) => {
-    // Strong protection: Admin cannot modify their own account
     if (isCurrentAdmin(user)) {
-      toast.error("❌ You cannot modify your own account!", {
-        duration: 4000,
-      });
+      toast.error("❌ You cannot modify your own account!");
       return;
     }
 
     setActionLoading(user._id);
 
     try {
+      let newStatus = user.status;
+
       if (action === 'approve') {
+        newStatus = 'active';
         toast.success(`${user.name} has been approved and activated`);
       } else if (action === 'block') {
+        newStatus = 'block';
         toast.success(`${user.name} has been blocked`);
+      } else if (action === 'unblock') {
+        newStatus = 'active';
+        toast.success(`${user.name} has been unblocked`);
       }
-      
-      // TODO: Add real API call here
-      // await fetch(`${API_BASE}/users/${user._id}/${action}`, { method: 'PATCH' });
-      
-      fetchUsers(); // Refresh list
+
+      // Update locally for instant UI feedback
+      setUsers(prev => prev.map(u => 
+        u._id === user._id ? { ...u, status: newStatus } : u
+      ));
+
+      // TODO: Real API call
+      await fetch(`${API_BASE}/api/products/${user._id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      });
+
     } catch (error) {
       toast.error("Action failed");
     } finally {
@@ -91,6 +102,8 @@ export default function ManageUsers() {
   };
 
   const getStatusBadge = (status) => {
+    console.log(status);
+    
     if (status === 'active') {
       return <span className="px-4 py-1.5 text-xs font-medium rounded-full bg-emerald-500/10 text-emerald-400">Active</span>;
     }
@@ -101,8 +114,8 @@ export default function ManageUsers() {
   };
 
   const getRoleColor = (role) => {
-    if (role === 'Admin') return 'bg-purple-600 text-white';
-    if (role === 'Seller') return 'bg-emerald-600 text-white';
+    if (role === 'admin') return 'bg-purple-600 text-white';
+    if (role === 'seller') return 'bg-emerald-600 text-white';
     return 'bg-sky-600 text-white';
   };
 
@@ -127,17 +140,17 @@ export default function ManageUsers() {
         <div className="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800">
           {filteredUsers.map((user) => {
             const isAdmin = isCurrentAdmin(user);
+            const isBlocked = user.status === 'block';
+
             return (
               <div
                 key={user._id}
                 className="flex items-center gap-4 px-6 py-5 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all group"
               >
-                {/* Avatar */}
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg ${user.avatarColor || 'bg-emerald-600'}`}>
                   {user.name?.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </div>
 
-                {/* User Info */}
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
                     <h3 className="font-semibold text-lg">{user.name}</h3>
@@ -146,30 +159,25 @@ export default function ManageUsers() {
                   <p className="text-zinc-500 text-sm">{user.email}</p>
                 </div>
 
-                {/* Role */}
                 <div>
                   <span className={`px-4 py-1.5 text-xs font-medium rounded-full ${getRoleColor(user.role)}`}>
                     {user.role}
                   </span>
                 </div>
 
-                {/* Status */}
                 <div>
                   {getStatusBadge(user.status)}
                 </div>
 
-                {/* Location */}
                 <div className="text-zinc-400 text-sm hidden md:block w-48">
                   {user.location}
                 </div>
 
-                {/* Actions */}
                 <div className="flex items-center gap-3">
                   <button className="p-3 hover:bg-zinc-800 rounded-xl text-zinc-400 hover:text-white">
                     <Eye size={20} />
                   </button>
 
-                  {/* Approve Button (only for Pending) */}
                   {user.status === 'pending' && (
                     <button
                       onClick={() => handleAction('approve', user)}
@@ -181,18 +189,19 @@ export default function ManageUsers() {
                     </button>
                   )}
 
-                  {/* Block Button - Disabled for self */}
                   <button
-                    onClick={() => handleAction('block', user)}
+                    onClick={() => handleAction(isBlocked ? 'unblock' : 'block', user)}
                     disabled={isAdmin || actionLoading === user._id}
                     className={`flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-medium transition-all ${
                       isAdmin 
                         ? 'text-zinc-600 cursor-not-allowed opacity-50' 
-                        : 'text-orange-400 hover:text-orange-500 hover:bg-orange-900/20'
+                        : isBlocked
+                          ? 'text-emerald-400 hover:text-emerald-500 hover:bg-emerald-900/20'
+                          : 'text-orange-400 hover:text-orange-500 hover:bg-orange-900/20'
                     }`}
                   >
-                    <UserX size={18} />
-                    Block
+                    {isBlocked ? <UnblockIcon size={18} /> : <UserX size={18} />}
+                    {isBlocked ? 'Unblock' : 'Block'}
                   </button>
                 </div>
               </div>

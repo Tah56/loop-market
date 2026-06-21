@@ -63,7 +63,7 @@ export default function UserProfile() {
             <div className="flex flex-col md:flex-row gap-8">
               
               {/* Profile Picture - Responsive */}
-              <div className="relative flex-shrink-0 mx-auto md:mx-0">
+              <div className="relative shrink-0 mx-auto md:mx-0">
                 <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-3xl overflow-hidden border-4 border-zinc-700">
                   <img
                     src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400"
