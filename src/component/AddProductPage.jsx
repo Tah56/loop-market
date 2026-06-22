@@ -18,7 +18,7 @@ export default function AddProductPage({user}) {
     title: '',
     category: '',
     condition: '',
-    price: '',
+    price: Number(""),
     stock: '1',
     description: '',
     status: 'pending'

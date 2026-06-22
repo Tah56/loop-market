@@ -1,9 +1,9 @@
 
 
 import { auth } from "@/lib/auth";
-import {Bars, Bell, Envelope, Gear, House, Magnifier, Person} from "@gravity-ui/icons";
+import {Bars, Bell, CreditCard, Envelope, Gear, House, Magnifier, Person} from "@gravity-ui/icons";
 import {Button, Drawer} from "@heroui/react";
-import { BarChart3, BoxIcon, ChartAreaIcon, LayoutDashboard, Package, Plus, PlusIcon, ShoppingBag, ShoppingCart, Users } from "lucide-react";
+import { BarChart3, BoxIcon, ChartAreaIcon, HeaterIcon, LayoutDashboard, Package, Plus, PlusIcon, ShoppingBag, ShoppingCart, Users } from "lucide-react";
 import { headers } from "next/headers";
 import Link from "next/link";
 
@@ -53,7 +53,33 @@ console.log();
     href: "/dashboard/analytics",
     label: "Analytics"
   },
-]:[];
+]:[
+  {
+    icon: LayoutDashboard,
+    href: "/dashboard/buyer",
+    label: "Overview",
+  },
+  {
+    icon: ShoppingBag,
+    href: "/dashboard/buyer/orders",
+    label: "My Orders",
+  },
+  {
+    icon: HeaterIcon,
+    href: "/dashboard/buyer/wishlist",
+    label: "Wishlist",
+  },
+  {
+    icon: CreditCard,
+    href: "/dashboard/buyer/payments",
+    label: "Payment History",
+  },
+  {
+    icon: Users,
+    href: "/dashboard/buyer/profile",
+    label: "Profile",
+  },
+];
   const navLinks =  <nav className="flex flex-col gap-1">
                 {navItems.map((item) => (
                     <Link key={item.label} href={item.href}>
