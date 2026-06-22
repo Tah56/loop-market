@@ -16,10 +16,12 @@ export async function POST(request) {
     );
     const data = await res.json();
 
-    console.log(res);
+    
     const headersList = await headers();
     const origin = headersList.get("origin");
-
+    
+    console.log(res);
+   
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
       customer_email: user.email,
@@ -39,7 +41,10 @@ export async function POST(request) {
       ],
       mode: "payment",
       metadata: {
+        productId: data._id,
         orderId,
+       
+        
       },
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     });

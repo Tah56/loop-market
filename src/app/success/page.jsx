@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CheckCircle, Package, ArrowRight, Receipt } from "lucide-react";
+import { CheckCircle, Package, ArrowRight } from "lucide-react";
 import { stripe } from "@/lib/stripe";
 import CopyButton from "@/component/CopyBtn";
 
@@ -16,13 +16,16 @@ export default async function Success({ searchParams }) {
   });
 
   if (session.status === "open") {
+    console.log(product);
+
     redirect("/");
   }
 
   const customerEmail = session.customer_details?.email;
-  const orderId =
-    session.metadata?.orderId || `LM-${session.id.slice(-8).toUpperCase()}`;
+  const orderId = session.metadata?.orderId || `LM-${session.id.slice(-8).toUpperCase()}`;
   const shortTransactionId = `${session.id.slice(0, 10)}...${session.id.slice(-6)}`;
+  const product = session?.metadata;
+  console.log(product);
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6">
