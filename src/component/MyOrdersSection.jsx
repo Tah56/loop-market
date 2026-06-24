@@ -208,7 +208,7 @@ export default function MyOrders() {
                       {/* Cancel Button */}
                       {order.orderStatus === 'Pending' && (
                         <button
-                          onClick={() => handleCancelOrder(order.productId)}
+                          onClick={() => handleCancelOrder(order.orderId)}
                           className="w-full flex items-center justify-center gap-2 text-red-400 hover:text-red-500 py-3 rounded-2xl text-sm font-medium transition-all"
                         >
                           <Trash2 size={18} />

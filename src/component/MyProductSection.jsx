@@ -65,7 +65,7 @@ export default function MyProductCard({ data }) {
               {/* Price Row */}
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-3xl font-black text-[#0F172A] tracking-tight">
-                  $89
+                 {product.price}
                 </span>
                 <span className="text-sm font-semibold text-zinc-400 line-through">
                   $129

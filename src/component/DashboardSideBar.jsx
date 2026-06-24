@@ -45,7 +45,7 @@ console.log();
   },
   {
     icon: ShoppingCart,
-    href: "/dashboard/orders",
+    href: "/dashboard/admin/all-orders",
     label: "Orders"
   },
   {

@@ -43,3 +43,10 @@ export const paymentInfo = async (data,method="POST")=>{
    console.log(datas);
    return datas
 }
+
+export const ss = async()=>{
+    const headersList  = await headers();
+    
+const origin = headersList.get("origin");
+return origin
+}
