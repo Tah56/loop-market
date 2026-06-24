@@ -19,7 +19,7 @@ console.log();
     {icon: LayoutDashboard, href:"/", label: "Overview"},
     {icon: PlusIcon,href:"/dashboard/seller/addProduct", label: "Add Product"},
     {icon: BoxIcon,href:"/dashboard/seller/MyProduct", label: "My Product"},
-    {icon: ShoppingBag,href:"/", label: "Oders"},
+    {icon: ShoppingBag,href:"/dashboard/seller/orders", label: "Oders"},
     {icon: ChartAreaIcon,href:"/", label: "Analytics"},
     {icon: Person,href:"/", label: "Profile"},
   ]:user?.user?.role ==="admin"?[
