@@ -3,9 +3,16 @@ import { redirect } from "next/navigation";
 import { CheckCircle, Package, ArrowRight } from "lucide-react";
 import { stripe } from "@/lib/stripe";
 import CopyButton from "@/component/CopyBtn";
+import { buyerInfo, getUsers, paymentInfo } from "@/lib/core/session,";
+
+
 
 export default async function Success({ searchParams }) {
   const { session_id } = await searchParams;
+
+  
+  
+
 
   if (!session_id) {
     throw new Error("Please provide a valid session_id (`cs_test_...`)");
@@ -15,17 +22,40 @@ export default async function Success({ searchParams }) {
     expand: ["line_items", "payment_intent"],
   });
 
+  
+  
   if (session.status === "open") {
-    console.log(product);
-
+    
+    
+  
     redirect("/");
+    
   }
+    
+    const customerEmail = session.customer_details?.email;
+    const orderId = session.metadata?.orderId || `LM-${session.id.slice(-8).toUpperCase()}`;
+    const shortTransactionId = `${session.id.slice(0, 10)}...${session.id.slice(-6)}`;
+    const product =  session?.metadata;
+    const products = {
+      ...product,
+     
+    }
+    console.log(products);
+    
+    
+  if (session.status === "complete") {
+    const payments = {
+      orderId:products.orderId,
+      transactionId:session.id,
+      amount:(session.amount_total / 100).toFixed(2),
+      paymentStatus: "Paid"
+      
+    }
+    const data =await paymentInfo(payments)
 
-  const customerEmail = session.customer_details?.email;
-  const orderId = session.metadata?.orderId || `LM-${session.id.slice(-8).toUpperCase()}`;
-  const shortTransactionId = `${session.id.slice(0, 10)}...${session.id.slice(-6)}`;
-  const product = session?.metadata;
-  console.log(product);
+  
+
+  }
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-6">

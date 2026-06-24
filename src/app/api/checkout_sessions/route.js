@@ -4,6 +4,7 @@ import { stripe } from "@/lib/stripe";
 import { auth } from "@/lib/auth";
 import { product_data } from "@/lib/core/products";
 import { randomUUID } from "crypto";
+import { buyerInfo, getUsers } from "@/lib/core/session,";
 
 export async function POST(request) {
   try {
@@ -15,13 +16,34 @@ export async function POST(request) {
       `${process.env.NEXT_PUBLIC_API}/api/products/${product_datas}`,
     );
     const data = await res.json();
-
-    
+    const { email } = await getUsers();
+    const userId = await buyerInfo(email);
     const headersList = await headers();
     const origin = headersList.get("origin");
-    
+
     console.log(res);
-   
+    const orders = {
+      productId: data._id,
+      image:data.mainImage,
+      productName:data.title,
+      sellerId: data.seller.id,
+      sellerName: data.seller.name,
+      sellerEmail: data.seller.email,
+      paymentStatus: "Pending",
+      orderStatus: "Pending",
+      amount:data.price,
+      orderId,
+      buyerInfo: userId,
+    };
+
+    await fetch(`${process.env.NEXT_PUBLIC_API}/api/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orders),
+    });
+
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
       customer_email: user.email,
@@ -41,10 +63,7 @@ export async function POST(request) {
       ],
       mode: "payment",
       metadata: {
-        productId: data._id,
         orderId,
-       
-        
       },
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     });
