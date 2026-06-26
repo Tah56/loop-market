@@ -1,118 +1,199 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Button } from "@heroui/react";
-import Image from "next/image";
-import Link from "next/link";
-import { Delete } from "./Delete";
+import { useState, useEffect } from 'react';
+import { Search, Eye, Edit2, Trash2, Plus } from 'lucide-react';
+import Link from 'next/link';
+import toast, { Toaster } from 'react-hot-toast';
+import { authClient } from '@/lib/auth-client';
 
-export default function MyProductCard({ data }) {
-  // Mock handler for cart interaction
-  const handleAddToCart = () => {
-    console.log("Product added to cart!");
+export default function MyProducts({data}) {
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  const API_BASE = process.env.NEXT_PUBLIC_API || 'http://localhost:5000/api';
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      
+
+      setProducts(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to load products");
+      
+      // Mock Data (Remove when backend is ready)
+      const mockData = [
+        {
+          _id: "1",
+          title: "iPhone 13 Pro Max 256GB",
+          category: "Mobile Phones",
+          price: 750,
+          stock: 3,
+          status: "Approved",
+          image: "https://picsum.photos/id/1015/80/80"
+        },
+        {
+          _id: "2",
+          title: "Samsung 55 4K OLED TV",
+          category: "Electronics",
+          price: 620,
+          stock: 2,
+          status: "Pending",
+          image: "https://picsum.photos/id/180/80/80"
+        },
+        {
+          _id: "3",
+          title: "Samsung Galaxy S22 Ultra",
+          category: "Mobile Phones",
+          price: 680,
+          stock: 5,
+          status: "Approved",
+          image: "https://picsum.photos/id/201/80/80"
+        },
+        {
+          _id: "4",
+          title: "Mountain Bike Trek Marlin 7",
+          category: "Sports",
+          price: 950,
+          stock: 5,
+          status: "Approved",
+          image: "https://picsum.photos/id/1074/80/80"
+        },
+      ];
+      setProducts(mockData);
+      setFilteredProducts(mockData);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // Search Filter
+  useEffect(() => {
+    let result = products;
+    if (searchTerm) {
+      result = result.filter(product =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    setFilteredProducts(result);
+  }, [searchTerm, products]);
+
+  const handleDelete = async (id) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+
+    try {
+      await fetch(`${API_BASE}/api/seller/products/${id}`, { method: 'DELETE' });
+      toast.success("Product deleted successfully");
+      fetchProducts(); // Refresh list
+    } catch (error) {
+      toast.error("Failed to delete product");
+    }
   };
 
   return (
-    <div>
-      {data.map((product) => {
-        return (
-          <div key={product._id} className="w-full max-w-90 bg-white rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.06)] overflow-hidden border border-zinc-100 flex flex-col font-sans">
-            {/* Top Section: Yellow Background Image Container */}
-            <div className="relative w-full aspect-4/3 flex items-center justify-center p-6 overflow-hidden">
-              {/* Badge */}
-              <span className="absolute top-5 left-5  text-[#111827] text-xs font-bold px-4 py-2 rounded-full shadow-xs">
-                Best Seller
-              </span>
+    <div className="min-h-screen bg-zinc-950 text-white p-6">
+      <Toaster position="top-center" richColors />
 
-              {/* Product Image */}
-              {/* Replace the src path with your local headphones image asset */}
-              <Image
-                src={product.images[0]}
-                alt={product.title}
-                className="w-4/5 h-4/5 object-contain mix-blend-multiply drop-shadow-md"
-                width={200}
-                height={200}
-              />
-            </div>
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold">My Products ({filteredProducts.length})</h1>
+          <Link
+            href="/seller/add-product"
+            className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl flex items-center gap-2 font-medium transition-all"
+          >
+            <Plus size={20} />
+            Add Product
+          </Link>
+        </div>
 
-            {/* Bottom Section: Product Content Information */}
-            <div className="p-6 flex flex-col grow">
-              {/* Title */}
-              <h3 className="text-xl font-black text-[#0F172A] leading-tight tracking-tight mb-3">
-              {product.title}
-              </h3>
+        {/* Search Bar */}
+        <div className="relative mb-8">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" size={20} />
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full bg-zinc-900 border border-zinc-700 pl-11 py-3.5 rounded-2xl focus:outline-none focus:border-emerald-500 text-sm"
+          />
+        </div>
 
-              {/* Rating Stars (Using clean inline SVGs matching Hero UI style) */}
-              <div className="flex items-center gap-1 mb-6">
-                {[...Array(4)].map((_, i) => (
-                  <svg
-                    key={i}
-                    className="w-4 h-4 text-[#F59E0B] fill-current"
-                    viewBox="0 0 24 24"
+        {/* Products List */}
+        <div className="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800">
+          {loading ? (
+            <div className="text-center py-20 text-zinc-500">Loading your products...</div>
+          ) : filteredProducts.length === 0 ? (
+            <div className="text-center py-20 text-zinc-500">No products found</div>
+          ) : (
+            filteredProducts.map((product) => (
+              <div
+                key={product._id}
+                className="flex items-center gap-6 px-8 py-6 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all last:border-none"
+              >
+                {/* Image */}
+                <div className="w-16 h-16 rounded-2xl overflow-hidden border border-zinc-700 shrink-0">
+                  <img 
+                    src={product.image || product.images?.[0]} 
+                    alt={product.title} 
+                    className="w-full h-full object-cover" 
+                  />
+                </div>
+
+                {/* Info */}
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg">{product.title}</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="px-3 py-1 text-xs rounded-full bg-blue-500/10 text-blue-400">
+                      {product.category}
+                    </span>
+                    <span className="px-3 py-1 text-xs rounded-full bg-emerald-500/10 text-emerald-400">
+                      New
+                    </span>
+                    <span className={`px-3 py-1 text-xs font-medium rounded-full ${
+                      product.status === 'Approved' 
+                        ? 'bg-emerald-500/10 text-emerald-400' 
+                        : 'bg-amber-500/10 text-amber-400'
+                    }`}>
+                      {product.status}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Price & Stock */}
+                <div className="text-right">
+                  <p className="text-emerald-400 font-semibold text-2xl">${product.price}</p>
+                  <p className="text-xs text-zinc-500">Stock: {product.stock}</p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2">
+                  <Link href={`/allproduct/${product._id}`} className="p-3 hover:bg-zinc-800 rounded-xl transition-all">
+                    <Eye size={20} />
+                  </Link>
+                  <Link href={`/dashboard/seller/edit-product/${product._id}`} className="p-3 hover:bg-zinc-800 rounded-xl transition-all">
+                    <Edit2 size={20} />
+                  </Link>
+                  <button 
+                    onClick={() => handleDelete(product._id)}
+                    className="p-3 hover:bg-red-900/30 rounded-xl text-red-400 hover:text-red-500 transition-all"
                   >
-                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                  </svg>
-                ))}
-                {/* Unfilled star */}
-                <svg
-                  className="w-4 h-4 text-zinc-300 fill-current"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.63-7.03zM12 15.4l-3.76 2.27 1-4.28-3.32-2.88 4.38-.38L12 6.1l1.71 4.04 4.38.38-3.32 2.88 1 4.28z" />
-                </svg>
+                    <Trash2 size={20} />
+                  </button>
+                </div>
               </div>
-
-              {/* Price Row */}
-              <div className="flex items-baseline gap-3 mb-6">
-                <span className="text-3xl font-black text-[#0F172A] tracking-tight">
-                 {product.price}
-                </span>
-                <span className="text-sm font-semibold text-zinc-400 line-through">
-                  $129
-                </span>
-              </div>
-
-              {/* Hero UI CTA Button */}
-             <div className="flex flex-col gap-2">
-                 <Link className="" href={`/allproduct/${product._id}`}>
-              <Button
-                onClick={handleAddToCart}
-                className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-sm tracking-wide rounded-xl py-6 transition-colors mt-auto"
-                startContent={
-                    <svg
-                    className="w-4 h-4 mr-1 fill-current"
-                    viewBox="0 0 24 24"
-                    >
-                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
-                  </svg>
-                }
-                >
-                Add to Cart
-              </Button>
-                  </Link>
-                 <Link href={`/dashboard/seller/edit-product/${product._id}`}>
-              <Button
-                onClick={handleAddToCart}
-                className="w-full bg-[#0F172A] hover:bg-[#1E293B] text-white font-bold text-sm tracking-wide rounded-xl py-6 transition-colors mt-auto"
-                startContent={
-                    <svg
-                    className="w-4 h-4 mr-1 fill-current"
-                    viewBox="0 0 24 24"
-                    >
-                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
-                  </svg>
-                }
-                >
-            Edit Product 
-              </Button>
-                  </Link>
-                    <Delete></Delete>
-             </div>
-                  
-            </div>
-          </div>
-        );
-      })}
+            ))
+          )}
+        </div>
+      </div>
     </div>
   );
 }

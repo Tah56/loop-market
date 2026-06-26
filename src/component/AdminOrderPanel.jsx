@@ -119,7 +119,10 @@ export default function SellerOrders() {
       await fetch(`${API_BASE}/api/seller/${orderId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderStatus: newStatus })
+        
+        
+
+        
       });
 
       toast.success(`Order updated to ${newStatus}`);

@@ -16,12 +16,12 @@ console.log();
 
   const navItems  = user?.user?.role ==="seller"
 ?    [
-    {icon: LayoutDashboard, href:"/", label: "Overview"},
+    {icon: LayoutDashboard, href:"/dashboard/seller", label: "Overview"},
     {icon: PlusIcon,href:"/dashboard/seller/addProduct", label: "Add Product"},
     {icon: BoxIcon,href:"/dashboard/seller/MyProduct", label: "My Product"},
     {icon: ShoppingBag,href:"/dashboard/seller/orders", label: "Oders"},
     {icon: ChartAreaIcon,href:"/", label: "Analytics"},
-    {icon: Person,href:"/", label: "Profile"},
+    {icon: Person,href:"/dashboard/seller/edit-profile", label: "Profile"},
   ]:user?.user?.role ==="admin"?[
   {
     icon: LayoutDashboard,
@@ -76,7 +76,7 @@ console.log();
   },
   {
     icon: Users,
-    href: "/dashboard/buyer/profile",
+    href: "/dashboard/buyer/edit-profile",
     label: "Profile",
   },
 ];
@@ -119,6 +119,7 @@ console.log();
         </Drawer.Content>
       </Drawer.Backdrop>
     </Drawer>
+    
     </>
   );
 }

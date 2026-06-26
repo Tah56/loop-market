@@ -15,9 +15,9 @@ const data = await res.json()
 console.log(data);
 
     return (
-        <div className='grid grid-cols-3 p-3'>
+        <>
             <MyProductCard data={data}></MyProductCard>
-        </div>
+        </>
     );
 };
 
