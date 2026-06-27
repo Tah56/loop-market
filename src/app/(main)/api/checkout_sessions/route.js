@@ -64,6 +64,7 @@ export async function POST(request) {
       mode: "payment",
       metadata: {
         orderId,
+        email:userId.email
       },
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     });

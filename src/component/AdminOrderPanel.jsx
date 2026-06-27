@@ -120,7 +120,7 @@ export default function SellerOrders() {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         
-        
+        body:JSON.stringify({orderStatus: newStatus})
 
         
       });

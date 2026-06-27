@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export default function AddProductPage({user}) {
     console.log(user);
-    const {name,location,phone,email,id,role}=user?.user
+    const {name,location,phone,email,id,role,status}=user?.user
     const seller ={
         name,
         location,
@@ -18,7 +18,7 @@ export default function AddProductPage({user}) {
     title: '',
     category: '',
     condition: '',
-    price: Number(""),
+    price: '',
     stock: '1',
     description: '',
     status: 'pending'
@@ -175,101 +175,110 @@ export default function AddProductPage({user}) {
     <div className="min-h-screen bg-zinc-950 text-white p-6">
       <Toaster position="top-center" richColors />
 
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Add New Product</h1>
+    {status==="active"?(<div className="max-w-3xl mx-auto">
+      <h1 className="text-4xl font-bold mb-8">Add New Product</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="bg-zinc-900 rounded-3xl p-8 border border-zinc-800">
-            
-            {/* Product Title */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium mb-2">Product Title <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                placeholder="e.g. iPhone 13 Pro Max"
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-purple-500"
-                required
-              />
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <div className="bg-zinc-900 rounded-3xl p-8 border border-zinc-800">
+          
+          {/* Product Title */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-2">Product Title <span className="text-red-500">*</span></label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="e.g. iPhone 13 Pro Max"
+              className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-[#009966]"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">Category <span className="text-red-500">*</span></label>
+              <select name="category" value={formData.category} onChange={handleChange} className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-[#009966]" required>
+                <option value="">Select category</option>
+                {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              </select>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Category <span className="text-red-500">*</span></label>
-                <select name="category" value={formData.category} onChange={handleChange} className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-purple-500" required>
-                  <option value="">Select category</option>
-                  {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Condition <span className="text-red-500">*</span></label>
-                <select name="condition" value={formData.condition} onChange={handleChange} className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-purple-500" required>
-                  <option value="">Select condition</option>
-                  {conditions.map(cond => <option key={cond} value={cond}>{cond}</option>)}
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Price (USD) <span className="text-red-500">*</span></label>
-                <input type="number" name="price" value={formData.price} onChange={handleChange} placeholder="0.00" className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-purple-500" required />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Stock Quantity <span className="text-red-500">*</span></label>
-                <input type="number" name="stock" value={formData.stock} onChange={handleChange} min="1" className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-purple-500" required />
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <label className="block text-sm font-medium mb-2">Description <span className="text-red-500">*</span></label>
-              <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Describe your product in detail..." rows={5} className="w-full bg-zinc-800 border border-zinc-700 rounded-3xl px-5 py-4 focus:outline-none focus:border-purple-500 resize-y" required />
-            </div>
-
-            {/* Image Upload Section */}
-            <div className="mt-8">
-              <label className="block text-sm font-medium mb-3">Product Images <span className="text-red-500">*</span></label>
-              
-              <div onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className={`border-2 border-dashed rounded-3xl p-10 text-center transition-all ${isDragging ? 'border-purple-500 bg-purple-950/30' : 'border-zinc-700'}`}>
-                <input type="file" multiple accept="image/*" onChange={(e) => handleImageChange(e.target.files)} className="hidden" id="image-upload" />
-                <label htmlFor="image-upload" className="cursor-pointer">
-                  <div className="text-5xl mb-4">📸</div>
-                  <p className="text-lg font-medium">Drop images here or click to upload</p>
-                  <p className="text-zinc-500 text-sm mt-1">Max 6 images • PNG, JPG, WebP</p>
-                </label>
-              </div>
-
-              {previewUrls.length > 0 && (
-                <div className="grid grid-cols-3 gap-4 mt-6">
-                  {previewUrls.map((url, index) => (
-                    <div key={index} className="relative group">
-                      <img src={url} alt={`preview-${index}`} className="w-full h-40 object-cover rounded-2xl border border-zinc-700" />
-                      <button type="button" onClick={() => removeImage(index)} className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all">Remove</button>
-                      {index === 0 && <div className="absolute top-2 left-2 bg-purple-600 text-xs px-2 py-1 rounded-full">Main</div>}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="mt-8 bg-amber-950/50 border border-amber-900/50 rounded-2xl p-4 text-amber-400 text-sm">
-              <strong>Note:</strong> Your product will be reviewed by admin before going live.
-            </div>
-
-            <div className="flex items-center gap-4 mt-10">
-              <button type="submit" disabled={loading || uploading} className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-2">
-                {uploading ? "Uploading Images..." : loading ? "Submitting..." : "Submit Product"}
-              </button>
-              
-              <button type="button" onClick={() => window.history.back()} className="px-8 py-4 border border-zinc-700 hover:bg-zinc-800 rounded-2xl font-medium transition-all">Cancel</button>
+            <div>
+              <label className="block text-sm font-medium mb-2">Condition <span className="text-red-500">*</span></label>
+              <select name="condition" value={formData.condition} onChange={handleChange} className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-[#009966]" required>
+                <option value="">Select condition</option>
+                {conditions.map(cond => <option key={cond} value={cond}>{cond}</option>)}
+              </select>
             </div>
           </div>
-        </form>
-      </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div>
+              <label className="block text-sm font-medium mb-2">Price (USD) <span className="text-red-500">*</span></label>
+              <input type="number" name="price" value={formData.price} onChange={handleChange} placeholder="0.00" className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-[#009966]" required />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Stock Quantity <span className="text-red-500">*</span></label>
+              <input type="number" name="stock" value={formData.stock} onChange={handleChange} min="1" className="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none focus:border-[#009966]" required />
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <label className="block text-sm font-medium mb-2">Description <span className="text-red-500">*</span></label>
+            <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Describe your product in detail..." rows={5} className="w-full bg-zinc-800 border border-zinc-700 rounded-3xl px-5 py-4 focus:outline-none focus:border-[#009966] resize-y" required />
+          </div>
+
+          {/* Image Upload Section */}
+          <div className="mt-8">
+            <label className="block text-sm font-medium mb-3">Product Images <span className="text-red-500">*</span></label>
+            
+            <div onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} className={`border-2 border-dashed  rounded-3xl p-10 text-center transition-all ${isDragging ? 'border-purple-500 bg-purple-950/30' : 'border-zinc-700'}`}>
+              <input type="file" multiple accept="image/*" onChange={(e) => handleImageChange(e.target.files)} className="hidden" id="image-upload" />
+              <label htmlFor="image-upload" className="cursor-pointer">
+                <div className="text-5xl mb-4">📸</div>
+                <p className="text-lg font-medium">Drop images here or click to upload</p>
+                <p className="text-zinc-500 text-sm mt-1">Max 6 images • PNG, JPG, WebP</p>
+              </label>
+            </div>
+
+            {previewUrls.length > 0 && (
+              <div className="grid grid-cols-3 gap-4 mt-6">
+                {previewUrls.map((url, index) => (
+                  <div key={index} className="relative group">
+                    <img src={url} alt={`preview-${index}`} className="w-full h-40 object-cover rounded-2xl border border-zinc-700" />
+                    <button type="button" onClick={() => removeImage(index)} className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white text-xs px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-all">Remove</button>
+                    {index === 0 && <div className="absolute top-2 left-2 bg-[#009966] text-xs px-2 py-1 rounded-full">Main</div>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mt-8 bg-amber-950/50 border border-[#009966] rounded-2xl p-4 text-amber-400 text-sm">
+            <strong>Note:</strong> Your product will be reviewed by admin before going live.
+          </div>
+
+          <div className="flex items-center gap-4 mt-10">
+            <button type="submit" disabled={loading || uploading} className="flex-1 bg-[#009966] hover:bg-[#009966]/80 disabled:bg-[#009966] py-4 rounded-2xl font-semibold text-lg transition-all flex items-center justify-center gap-2">
+              {uploading ? "Uploading Images..." : loading ? "Submitting..." : "Submit Product"}
+            </button>
+            
+            <button type="button" onClick={() => window.history.back()} className="px-8 py-4 border border-zinc-700 hover:bg-zinc-800 rounded-2xl font-medium transition-all">Cancel</button>
+          </div>
+        </div>
+      </form>
+    </div>):(<div className="bg-red-500/10 border border-red-500/20 rounded-3xl p-8 text-center">
+      <h2 className="text-2xl font-bold text-red-400 mb-3">
+        Account Restricted
+      </h2>
+
+      <p className="text-zinc-400">
+        Your seller account has been restricted by the admin.
+        You cannot add new products at this time.
+      </p>
+    </div>)}
     </div>
   );
 }

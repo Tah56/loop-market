@@ -1,5 +1,6 @@
+import DashboardSkeleton from "@/component/loading";
 import ProductCard from "@/component/ProductCard";
-import React from "react";
+import React, { Suspense } from "react";
 
 const page = async ({searchParams}) => {
   const searchQuery = await searchParams;
@@ -16,7 +17,12 @@ console.log();
   console.log(data);
   return (
     <div>
+      <Suspense fallback={<DashboardSkeleton
+        ></DashboardSkeleton>
+      }>
+
       <ProductCard filters={searchQuery} data={data}></ProductCard>
+      </Suspense>
     </div>
   );
 };

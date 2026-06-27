@@ -102,13 +102,13 @@ export default function MyProducts({data}) {
     <div className="min-h-screen bg-zinc-950 text-white p-6">
       <Toaster position="top-center" richColors />
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl min-h-screen mx-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex  justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">My Products ({filteredProducts.length})</h1>
           <Link
             href="/seller/add-product"
-            className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-2xl flex items-center gap-2 font-medium transition-all"
+            className=" bg-[#009966] hover:bg-[#009966]/80 px-6 py-3 rounded-2xl flex items-center gap-2 font-medium transition-all"
           >
             <Plus size={20} />
             Add Product
@@ -137,7 +137,7 @@ export default function MyProducts({data}) {
             filteredProducts.map((product) => (
               <div
                 key={product._id}
-                className="flex items-center gap-6 px-8 py-6 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all last:border-none"
+                className="flex flex-wrap items-center gap-6 px-8 py-6 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all last:border-none"
               >
                 {/* Image */}
                 <div className="w-16 h-16 rounded-2xl overflow-hidden border border-zinc-700 shrink-0">

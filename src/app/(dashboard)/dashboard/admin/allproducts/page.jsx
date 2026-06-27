@@ -124,7 +124,7 @@ export default function ManageProducts() {
             />
           </div>
 
-          <div className="flex gap-1 bg-zinc-900 p-1 rounded-2xl">
+          <div className="flex justify-between flex-wrap gap-1 bg-zinc-900 p-1 rounded-2xl">
             {["All", "Pending", "Approved", "Rejected"].map((tab) => (
               <button
                 key={tab}
@@ -155,7 +155,7 @@ export default function ManageProducts() {
             filteredProducts.map((product) => (
               <div
                 key={product._id || product.id}
-                className="flex items-center gap-4 px-6 py-5 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all group"
+                className="flex flex-wrap items-center gap-4 px-6 py-5 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all group"
               >
                 <img
                   src={

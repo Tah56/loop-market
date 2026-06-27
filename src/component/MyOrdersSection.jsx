@@ -5,6 +5,7 @@ import { Search, Eye, Trash2, CreditCard } from 'lucide-react';
 import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
 import { authClient } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
@@ -12,6 +13,8 @@ export default function MyOrders() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('All');
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter()
 
   const API_BASE = process.env.NEXT_PUBLIC_API || 'http://localhost:5000';
 
@@ -103,7 +106,10 @@ export default function MyOrders() {
   };
 
   const handlePayNow = (order) => {
-    window.location.href = `/payment?orderId=${order.id}`;
+    router.replace
+    (`https://checkout.stripe.com/${order._Id}`)
+    console.log(order);
+    
   };
 
   const tabs = ['All', 'Pending', 'Accepted', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
@@ -128,7 +134,7 @@ export default function MyOrders() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-zinc-900 p-1 rounded-2xl mb-8 overflow-x-auto">
+        <div className="flex justify-between flex-wrap gap-1 bg-zinc-900 p-1 rounded-2xl mb-8 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -156,7 +162,7 @@ export default function MyOrders() {
                 key={order._id}
                 className="bg-zinc-900 rounded-3xl p-6 border border-zinc-800 hover:border-zinc-700 transition-all"
               >
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-wrap flex-col md:flex-row gap-6">
                   {/* Product Info */}
                   <div className="flex-1 flex gap-5">
                     <div className="w-14 h-14 rounded-2xl overflow-hidden border border-zinc-700 shrink-0">

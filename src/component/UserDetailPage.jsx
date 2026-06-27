@@ -145,7 +145,7 @@ console.log(users);
             return (
               <div
                 key={user._id}
-                className="flex items-center gap-4 px-6 py-5 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all group"
+                className="flex flex-wrap items-center gap-4 px-6 py-5 border-b border-zinc-800 hover:bg-zinc-800/50 transition-all group"
               >
                 <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg ${user.avatarColor || 'bg-emerald-600'}`}>
                   {user.name?.split(' ').map(n => n[0]).join('').toUpperCase()}

@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 
 
-export default function CustomTrigger({ user }) {
+export default function DropDown({ user }) {
  const router = useRouter()
 
   const handleSignOut = async () => {
@@ -30,7 +30,7 @@ export default function CustomTrigger({ user }) {
           />
           <Avatar.Fallback delayMs={600}>{user?.name[0]}</Avatar.Fallback>
         </Avatar>
-        <h2 className="font-bold hidden md:flex lg:flex ">{`${user?.name}`.split(" ")[0] + ""}</h2>
+        <h2 className="font-bold hidden md:flex text-white lg:flex ">{`${user?.name}`.split(" ")[0] + ""}</h2>
         
       </Dropdown.Trigger>
       <Dropdown.Popover>
@@ -52,7 +52,7 @@ export default function CustomTrigger({ user }) {
         </div>
         <Dropdown.Menu>
           <Dropdown.Item className=" flex md:hidden lg:hidden" id="dashboard" textValue="Dashboard">
-            <Link href={"/dashboard/request"}>
+            <Link href={`/dashboard/${user?.role}`}>
               <Label>Dashboard</Label>
             </Link>
           </Dropdown.Item>

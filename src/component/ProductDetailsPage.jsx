@@ -7,7 +7,16 @@ import toast, { Toaster } from "react-hot-toast";
 import { authClient } from '@/lib/auth-client';
 
 export default function ProductDetailsPage({ data }) {
-  console.log(data);
+
+
+
+    const { 
+        data: session, 
+        isPending, //loading state
+        error, //error object
+        refetch //refetch the session
+    } = authClient.useSession() 
+
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -25,8 +34,9 @@ export default function ProductDetailsPage({ data }) {
   // Check if current user is product owner
   useEffect(() => {
     const checkOwner = async () => {
+      
+      
       try {
-        const { data: session } = await authClient.getSession();
         if (session?.user && product?.seller?.email) {
           setIsOwner(session.user.email === product.seller.email);
         }
@@ -174,18 +184,24 @@ export default function ProductDetailsPage({ data }) {
                   ADD TO CART
                 </button>
                 <div className="flex-1">
-                  <form action="/api/checkout_sessions" method="POST">
+                  {
+                    session && (
+
+                      
+                      <form action="/api/checkout_sessions" method="POST">
                     <input type="hidden" name="product_id" value={data?._id} />
                     <section>
                       <button
                         type="submit"
                         className=" w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-2xl font-semibold text-lg transition-all"
                         role="link"
-                      >
+                        >
                         BUY NOW
                       </button>
                     </section>
                   </form>
+                        )
+                      }
                 </div>
               </div>
             )}

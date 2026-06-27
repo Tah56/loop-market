@@ -122,7 +122,7 @@ const date = new Date(user?.createdAt).toISOString().split("T")[0];
       <Toaster position="top-center" richColors />
 
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex flex-wrap justify-between items-center mb-10">
           <div>
             <h1 className="text-4xl font-bold">Profile Settings</h1>
             <p className="text-zinc-400 mt-1">Manage your account information</p>
@@ -138,7 +138,7 @@ const date = new Date(user?.createdAt).toISOString().split("T")[0];
 
         {/* Profile Header */}
         <div className="bg-zinc-900 rounded-3xl p-6 mb-8 border border-zinc-800">
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap justify-center items-center gap-6">
             <div className="relative">
               <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-zinc-700">
                 <img

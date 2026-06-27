@@ -96,12 +96,14 @@ console.log();
               </nav>
 
   return (
-    <>
+    <div className="flex flex-col">
     <aside className="hidden w-64 shrink-0 border-t border-r border-default p-4 lg:block">
         {navLinks}
     </aside>
+    <div>
+
     <Drawer>
-      <Button  className={" md:hidden lg:hidden"} variant="secondary">
+      <Button  className={"hidden md:hidden lg:hidden"} variant="secondary">
         <Bars />
         Menu
       </Button>
@@ -119,7 +121,8 @@ console.log();
         </Drawer.Content>
       </Drawer.Backdrop>
     </Drawer>
+    </div>
     
-    </>
+    </div>
   );
 }

@@ -47,11 +47,13 @@ export default async function Success({ searchParams }) {
     const payments = {
       orderId:products.orderId,
       transactionId:session.id,
+      buyerEmail:products.email,
       amount:(session.amount_total / 100).toFixed(2),
       paymentStatus: "Paid"
       
     }
     const data =await paymentInfo(payments)
+console.log(payments);
 
   
 
