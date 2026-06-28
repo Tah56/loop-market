@@ -70,7 +70,7 @@ export default function AppNavbar() {
             {user && (
               <Link
                 href={`/dashboard/${role}`}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all
+                className={`px-4 py-2 md:hidden lg:flex rounded-xl text-sm font-medium transition-all
                   ${
                     pathname.startsWith("/dashboard")
                       ? "bg-[#009966]/15 text-[#009966]"
@@ -132,20 +132,7 @@ export default function AppNavbar() {
             );
           })}
 
-          {user && (
-            <Link
-              href={`/dashboard/${role}`}
-              className={`block px-4 py-3 rounded-2xl transition-all
-                ${
-                  pathname.startsWith("/dashboard")
-                    ? "bg-[#009966]/15 text-[#009966]"
-                    : "text-zinc-300 hover:bg-zinc-900"
-                }
-              `}
-            >
-              Dashboard
-            </Link>
-          )}
+          
         </div>
       )}
     </nav>

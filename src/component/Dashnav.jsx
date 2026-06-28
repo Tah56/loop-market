@@ -148,6 +148,9 @@ export default function DashNav() {
           </div>
 
           {/* Desktop User */}
+
+          <div className="flex">
+
           {user && (
             <div className="hidden md:flex items-center">
               <DropDown user={user} />
@@ -156,38 +159,39 @@ export default function DashNav() {
 
           {/* Mobile Menu Button */}
           <button
-            className="rounded-xl p-2 text-zinc-300 md:hidden"
+            className="rounded-xl p-2 text-zinc-300 lg:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
+            >
             <svg
               className="h-6 w-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
-            >
+              >
               {isMenuOpen ? (
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
                 />
               ) : (
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
                 />
               )}
             </svg>
           </button>
+              </div>
         </header>
 
         {/* Mobile Menu */}
        {/* Mobile Menu */}
 {isMenuOpen && (
-  <div className="md:hidden border-t border-green-500/10 bg-zinc-950">
+  <div className=";lg:hidden border-t border-green-500/10 bg-zinc-950">
     <ul className="flex flex-col gap-2 p-5">
       {navItems.map((item) => {
         const Icon = item.icon;

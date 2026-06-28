@@ -1,5 +1,6 @@
 "use client";
 
+import { authHeader } from "@/lib/core/session,";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -146,7 +147,9 @@ export default function EditProductPage({ user }) {
         `${process.env.NEXT_PUBLIC_API}/api/products/${user._id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+            ... await authHeader()
+           },
           body: JSON.stringify(finalData),
         },
       );

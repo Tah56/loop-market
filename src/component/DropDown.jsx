@@ -21,7 +21,7 @@ export default function DropDown({ user }) {
   };
   return (
     <Dropdown>
-      <Dropdown.Trigger className="rounded-full flex items-center space-x-5">
+      <Dropdown.Trigger className="rounded-full  flex items-center space-x-5">
         <Avatar >
           <Avatar.Image
             alt={user?.name}
@@ -50,8 +50,8 @@ export default function DropDown({ user }) {
             </div>
           </div>
         </div>
-        <Dropdown.Menu>
-          <Dropdown.Item className=" flex md:hidden lg:hidden" id="dashboard" textValue="Dashboard">
+        <Dropdown.Menu >
+          <Dropdown.Item className=" flex  lg:hidden "  id="dashboard" textValue="Dashboard">
             <Link href={`/dashboard/${user?.role}`}>
               <Label>Dashboard</Label>
             </Link>

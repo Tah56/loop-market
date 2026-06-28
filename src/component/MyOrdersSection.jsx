@@ -6,6 +6,7 @@ import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
+import { authHeader } from '@/lib/core/session,';
 
 export default function MyOrders() {
   const [orders, setOrders] = useState([]);
@@ -26,7 +27,10 @@ export default function MyOrders() {
     setLoading(true);
     try {
         const { data: session, error } = await authClient.getSession()
-      const res = await fetch(`${API_BASE}/api/orders/${session?.user?.email}`);
+      const res = await fetch(`${API_BASE}/api/orders/${session?.user?.email}`,{
+
+        headers: await authHeader()
+      });
       const data = await res.json();
       setOrders(data);
       setFilteredOrders(data);
@@ -201,7 +205,7 @@ export default function MyOrders() {
 
                     <div className="space-y-3 mt-6">
                       {/* Pay Now Button - Show if paymentStatus is not "paid" */}
-                      {order.paymentStatus !== 'paid' && (
+                      {order.paymentStatus !== 'Paid' && (
                         <button
                           onClick={() => handlePayNow(order)}
                           className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 py-3 rounded-2xl text-sm font-medium transition-all"

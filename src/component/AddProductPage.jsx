@@ -1,5 +1,6 @@
 'use client';
 
+import { authHeader } from '@/lib/core/session,';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -141,7 +142,8 @@ export default function AddProductPage({user}) {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/products`,{
         method: "POST",
         headers:{
-           'Content-Type':'application/json'
+           'Content-Type':'application/json',
+           ...await authHeader()
         },
         body: JSON.stringify(finalData)
       })
@@ -269,16 +271,30 @@ export default function AddProductPage({user}) {
           </div>
         </div>
       </form>
+    </div>): status==="pending"?( <div className="bg-amber-500/10 border border-amber-500/20 rounded-3xl p-8 text-center">
+      <div className="text-5xl mb-4">⏳</div>
+
+      <h2 className="text-2xl font-bold text-amber-400 mb-3">
+        Account Under Review
+      </h2>
+
+      <p className="text-zinc-400">
+        Your seller account is currently under review by our admin team.
+        You will be able to add products after approval.
+      </p>
     </div>):(<div className="bg-red-500/10 border border-red-500/20 rounded-3xl p-8 text-center">
+      <div className="text-5xl mb-4">🚫</div>
+
       <h2 className="text-2xl font-bold text-red-400 mb-3">
         Account Restricted
       </h2>
 
       <p className="text-zinc-400">
         Your seller account has been restricted by the admin.
-        You cannot add new products at this time.
+        Please contact support for assistance.
       </p>
-    </div>)}
+    </div>)
+    }
     </div>
   );
 }

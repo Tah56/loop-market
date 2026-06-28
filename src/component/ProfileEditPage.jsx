@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Camera, Save, Edit2 } from 'lucide-react';
 import { authClient } from '@/lib/auth-client';
+import { authHeader } from '@/lib/core/session,';
 
 
 export default function ProfileSettings() {
@@ -32,7 +33,9 @@ export default function ProfileSettings() {
       const { data: session } = await authClient.getSession();
       if (!session?.user) return;
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/users/${session.user.email}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/users/${session.user.email}`,{
+        headers:await authHeader()
+      });
       const user = await res.json();
 const date = new Date(user?.createdAt).toISOString().split("T")[0];
       setFormData({
@@ -85,7 +88,8 @@ const date = new Date(user?.createdAt).toISOString().split("T")[0];
         const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/users/${session.user.email}`,{
             method:"PATCH",
             headers:{
-                 "Content-Type": "application/json"
+                 "Content-Type": "application/json",
+                 ...await authHeader()
             },
             body: JSON.stringify({ image: result.data.url })
         });
@@ -105,7 +109,23 @@ const date = new Date(user?.createdAt).toISOString().split("T")[0];
     setLoading(true);
     try {
       // TODO: Send to your backend
+
+      const { data: session } = await authClient.getSession();
+      if (!session?.user) return;
       await new Promise(resolve => setTimeout(resolve, 800));
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/users/${session.user?.email}`,{
+        method:"PATCH",
+        headers:{
+          "Content-Type":"application/json",
+          ...await authHeader()
+        },
+        body:JSON.stringify(formData)
+      })
+
+      console.log(await res.json
+        ()
+      );
+      
       console.log(formData);
       
       toast.success("Profile updated successfully!");

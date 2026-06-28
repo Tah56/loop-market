@@ -4,19 +4,16 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Heart, ShoppingCart, X, Plus, Minus } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
-import { authClient } from '@/lib/auth-client';
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
 
 export default function ProductDetailsPage({ data }) {
-
-
-
-    const { 
-        data: session, 
-        isPending, //loading state
-        error, //error object
-        refetch //refetch the session
-    } = authClient.useSession() 
-
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+    refetch, //refetch the session
+  } = authClient.useSession();
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -34,8 +31,6 @@ export default function ProductDetailsPage({ data }) {
   // Check if current user is product owner
   useEffect(() => {
     const checkOwner = async () => {
-      
-      
       try {
         if (session?.user && product?.seller?.email) {
           setIsOwner(session.user.email === product.seller.email);
@@ -49,7 +44,14 @@ export default function ProductDetailsPage({ data }) {
   }, [product]);
 
   const handleAddToCart = () => {
+
+    if(!session?.user){
+
+      redirect("/auth/singIn")
+      
+    }
     toast.success(`${quantity} × ${product.title} added to cart!`);
+
   };
 
   const handleBuyNowClick = () => {
@@ -184,31 +186,40 @@ export default function ProductDetailsPage({ data }) {
                   ADD TO CART
                 </button>
                 <div className="flex-1">
-                  {
-                    session && (
-
-                      
-                      <form action="/api/checkout_sessions" method="POST">
-                    <input type="hidden" name="product_id" value={data?._id} />
-                    <section>
-                      <button
-                        type="submit"
-                        className=" w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-2xl font-semibold text-lg transition-all"
-                        role="link"
+                  {session && (
+                    <>
+                      {session?.user?.status === "active" ? (
+                        <form action="/api/checkout_sessions" method="POST">
+                          <input
+                            type="hidden"
+                            name="product_id"
+                            value={data?._id}
+                          />
+                          <button
+                            type="submit"
+                            className="w-full bg-emerald-600 hover:bg-emerald-500 py-4 rounded-2xl font-semibold text-lg transition-all"
+                          >
+                            BUY NOW
+                          </button>
+                        </form>
+                      ) : (
+                        <button
+                          disabled
+                          className="w-full bg-zinc-700 cursor-not-allowed py-4 rounded-2xl font-semibold text-lg opacity-60"
                         >
-                        BUY NOW
-                      </button>
-                    </section>
-                  </form>
-                        )
-                      }
+                          Account Pending Approval
+                        </button>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             )}
 
             {isOwner && (
               <div className="bg-amber-500/10 border border-amber-500/30 text-amber-400 p-4 rounded-2xl text-center font-medium">
-                You are the owner of this product. You cannot purchase your own item.
+                You are the owner of this product. You cannot purchase your own
+                item.
               </div>
             )}
 

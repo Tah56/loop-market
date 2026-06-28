@@ -5,6 +5,7 @@ import { Search, Eye, Truck, PackageCheck } from 'lucide-react';
 import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
 import { authClient } from '@/lib/auth-client';
+import { authHeader } from '@/lib/core/session,';
 
 export default function SellerOrders({sellerId}) {
   console.log(sellerId);
@@ -28,7 +29,9 @@ export default function SellerOrders({sellerId}) {
         return;
       }
 
-      const res = await fetch(`${API_BASE}/api/seller/${session.user.email}`);
+      const res = await fetch(`${API_BASE}/api/seller/${session.user.email}`,{
+        headers: await authHeader()
+      });
       const data = await res.json();
 
       setOrders(data);
@@ -98,17 +101,21 @@ export default function SellerOrders({sellerId}) {
 
   const handleStatusUpdate = async (orderId, newStatus) => {
     setActionLoading(orderId);
+console.log(orderId);
+console.log(filteredOrders);
 
     setOrders(prev =>
       prev.map(order =>
-        order._id === orderId ? { ...order, orderStatus: newStatus } : order
+        order.orderId === orderId ? { ...order, orderStatus: newStatus } : order
       )
     );
 
     try {
-      await fetch(`${API_BASE}/api/seller/orders/${orderId}`, {
+      await fetch(`${API_BASE}/api/seller/${orderId}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          ...await authHeader()
+         },
         body: JSON.stringify({ orderStatus: newStatus })
       });
 
@@ -232,7 +239,7 @@ export default function SellerOrders({sellerId}) {
         {order.orderStatus === "Pending" && (
           <button
             onClick={() =>
-              handleStatusUpdate(order._id, "Processing")
+              handleStatusUpdate(order.orderId, "Processing")
             }
             disabled={actionLoading === order._id}
             className="flex-1 bg-emerald-600 hover:bg-emerald-700 py-3 rounded-2xl text-sm font-medium disabled:opacity-70"
@@ -244,7 +251,7 @@ export default function SellerOrders({sellerId}) {
         {order.orderStatus === "Processing" && (
           <button
             onClick={() =>
-              handleStatusUpdate(order._id, "Shipped")
+              handleStatusUpdate(order.orderId, "Shipped")
             }
             disabled={actionLoading === order._id}
             className="flex-1 bg-blue-600 hover:bg-blue-700 py-3 rounded-2xl text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-70"
@@ -255,7 +262,7 @@ export default function SellerOrders({sellerId}) {
         )}
 
         <Link
-          href={`/seller/orders/${order._id}`}
+          href={`/seller/orders/${order.orderId}`}
           className="flex items-center justify-center px-5 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl sm:w-auto w-full"
         >
           <Eye size={20} />

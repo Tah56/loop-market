@@ -5,6 +5,7 @@ import { Search, Eye, Truck, PackageCheck, XCircle } from 'lucide-react';
 import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
 import { authClient } from '@/lib/auth-client';
+import { authHeader } from '@/lib/core/session,';
 
 export default function SellerOrders() {
   const [orders, setOrders] = useState([]);
@@ -27,7 +28,9 @@ export default function SellerOrders() {
         return;
       }
 
-      const res = await fetch(`${API_BASE}/api/sellers`);
+      const res = await fetch(`${API_BASE}/api/sellers`,{
+        headers: await authHeader()
+      });
       const data = await res.json();
 
       setOrders(data);
@@ -118,7 +121,9 @@ export default function SellerOrders() {
     try {
       await fetch(`${API_BASE}/api/seller/${orderId}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          ...await authHeader()
+         },
         
         body:JSON.stringify({orderStatus: newStatus})
 

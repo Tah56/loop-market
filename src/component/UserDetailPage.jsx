@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Search, UserX, Eye, UserCheck, UserCheck as UnblockIcon } from 'lucide-react';
+import { authHeader } from '@/lib/core/session,';
+
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);
@@ -23,7 +25,10 @@ console.log(users);
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/users`);
+      const res = await fetch(`${API_BASE}/api/users`,{
+        headers: await authHeader()
+        
+      });
       const data = await res.json();
       setUsers(data);
       setFilteredUsers(data);
@@ -90,7 +95,10 @@ console.log(users);
       // TODO: Real API call
       await fetch(`${API_BASE}/api/products/${user._id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+
+          ... await authHeader()
+         },
         body: JSON.stringify({ status: newStatus })
       });
 

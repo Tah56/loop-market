@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Eye, X, Trash2, Search } from "lucide-react";
 import Link from "next/link";
+import { authHeader } from "@/lib/core/session,";
 
 export default function ManageProducts() {
   const [products, setProducts] = useState([]);
@@ -23,7 +24,9 @@ export default function ManageProducts() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/products`);
+      const res = await fetch(`${API_BASE}/api/products`,{
+        headers: await authHeader()
+      });
       const data = await res.json();
       setProducts(data);
       setFilteredProducts(data);

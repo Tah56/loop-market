@@ -39,9 +39,7 @@ export default function LoginPage() {
          */
         callbackURL: "/",
      
-}, 
-
-)
+ } )
 
     setTimeout(() => {
       console.log('Login Data:', formData);
@@ -52,7 +50,11 @@ export default function LoginPage() {
  if(!error){
     toast.success("LogIn success")
  }};
-
+ const handleGoogleSignIn= async()=>{
+     const data = await authClient.signIn.social({
+    provider: "google",
+  });
+  }
   return (
     <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-4">
       <Toaster position="top-center" richColors />
@@ -137,7 +139,7 @@ export default function LoginPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <button type="button" className="flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 py-3.5 rounded-2xl transition-all">
+              <button onClick={handleGoogleSignIn} type="button" className="flex items-center justify-center gap-3 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 py-3.5 rounded-2xl transition-all">
                 <span className="text-xl">G</span>
                 <span>Google</span>
               </button>

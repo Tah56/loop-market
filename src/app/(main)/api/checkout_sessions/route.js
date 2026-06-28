@@ -4,7 +4,7 @@ import { stripe } from "@/lib/stripe";
 import { auth } from "@/lib/auth";
 import { product_data } from "@/lib/core/products";
 import { randomUUID } from "crypto";
-import { buyerInfo, getUsers } from "@/lib/core/session,";
+import { authHeader, buyerInfo, getUsers } from "@/lib/core/session,";
 
 export async function POST(request) {
   try {
@@ -40,6 +40,7 @@ export async function POST(request) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...await authHeader()
       },
       body: JSON.stringify(orders),
     });
