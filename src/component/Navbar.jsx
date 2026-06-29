@@ -95,12 +95,21 @@ export default function AppNavbar() {
             )}
 
             {!user && (
+
+              <>
               <Link
                 href="/auth/signUp"
                 className="hidden md:inline-flex items-center justify-center px-5 py-2 text-sm font-medium border border-[#009966]/50 text-[#009966] rounded-2xl hover:bg-[#009966]/10"
-              >
+                >
+                Get started
+              </Link>
+              <Link
+                href="/auth/singIn"
+                className="hidden md:inline-flex items-center justify-center px-5 py-2 text-sm font-medium border border-[#009966]/50 text-[#009966] rounded-2xl hover:bg-[#009966]/10"
+                >
                 Log In
               </Link>
+                </>
             )}
 
             {user && <CustomTrigger user={user} />}
@@ -110,31 +119,48 @@ export default function AppNavbar() {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="sm:hidden bg-zinc-950 border-t border-[#009966]/20 px-4 py-6 space-y-2">
-          {menuItems.map((item) => {
-            const active = pathname === item.href;
+  <div className="sm:hidden bg-zinc-950 border-t border-emerald-500/20 px-4 py-6 space-y-2">
+    {menuItems.map((item) => {
+      const active = pathname === item.href;
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-2xl transition-all
-                  ${
-                    active
-                      ? "bg-[#009966]/15 text-[#009966]"
-                      : "text-zinc-300 hover:bg-zinc-900"
-                  }
-                `}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={() => setIsMenuOpen(false)}
+          className={`block px-4 py-3 rounded-2xl transition-all font-medium ${
+            active
+              ? "bg-emerald-600 text-white"
+              : "text-zinc-300 hover:bg-zinc-900 hover:text-emerald-400"
+          }`}
+        >
+          {item.label}
+        </Link>
+      );
+    })}
 
-          
-        </div>
-      )}
+    {/* Mobile Auth Buttons */}
+    {!user && (
+      <div className="pt-4 border-t border-emerald-500/20 space-y-3">
+        <Link
+          href="/auth/signUp"
+          onClick={() => setIsMenuOpen(false)}
+          className="block w-full text-center px-5 py-3 font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl transition-all"
+        >
+          Get Started
+        </Link>
+
+        <Link
+          href="/auth/singIn"
+          onClick={() => setIsMenuOpen(false)}
+          className="block w-full text-center px-5 py-3 font-medium border border-emerald-500/50 text-emerald-400 hover:bg-emerald-900/30 rounded-2xl transition-all"
+        >
+          Log In
+        </Link>
+      </div>
+    )}
+  </div>
+)}
     </nav>
   );
 }

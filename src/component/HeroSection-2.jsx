@@ -99,7 +99,7 @@ export default function CategoriesSection() {
             return (
               <Link
                 key={item.name}
-                href={`/allproduct?category=${encodeURIComponent(item.name)}`}
+                href={`/allproduct?category=${encodeURIComponent(item.name)}&page=1`}
                 className="block h-full"
               >
                 <motion.div
