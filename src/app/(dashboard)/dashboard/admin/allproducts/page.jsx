@@ -84,7 +84,9 @@ export default function ManageProducts() {
 
       const res = await fetch(`${API_BASE}${endpoint}`, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          ...await authHeader()
+         },
         body: method !== "DELETE" ? JSON.stringify(body) : null,
       });
 

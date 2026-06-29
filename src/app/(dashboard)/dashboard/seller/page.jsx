@@ -26,7 +26,7 @@ export default function SellerDashboard() {
       if (!session?.user?.email) return;
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API}/api/seller/overview?email=${session.user.email}`,
+        `${process.env.NEXT_PUBLIC_API}/api/overview?email=${session.user.email}`,
       );
 
       const data = await res.json();

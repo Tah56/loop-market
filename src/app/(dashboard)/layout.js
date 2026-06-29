@@ -1,22 +1,22 @@
 import DashboardNavbar from '@/component/DashboardNav';
 import { Navigation } from '@/component/DashboardSideBar';
+
+
 import DashNav from '@/component/Dashnav';
 import React from 'react';
 
-const layout = ({children}) => {
-    return (
+const layout = ({children}) => (
 
 
-        <div>
-           <DashNav></DashNav>
+    <div>
+        <DashNav></DashNav>
         <div className='flex min-h-screen'>
-            <Navigation></Navigation>
+            <Navigation />
             <main className='flex-1'>
                 {children}
             </main>
         </div>
-        </div>
-    );
-};
+    </div>
+);
 
 export default layout;
