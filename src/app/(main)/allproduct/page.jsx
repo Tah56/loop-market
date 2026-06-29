@@ -21,7 +21,7 @@ console.log();
         ></DashboardSkeleton>
       }>
 
-      <ProductCard filters={searchQuery} data={data}></ProductCard>
+      <ProductCard  filters={searchQuery} data={data}></ProductCard>
       </Suspense>
     </div>
   );

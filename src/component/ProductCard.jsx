@@ -6,18 +6,35 @@ import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-export default function BrowseProducts({ filters,data }) {
+import {Pagination} from "@heroui/react";
+
+export default function BrowseProducts({total, filters,data }) {
   
-  const [filteredProducts, setFilteredProducts] = useState(data);
+  const [filteredProducts, setFilteredProducts] = useState(data.result);
 
   const [searchTerm, setSearchTerm] = useState(filters.search);
   const [category, setCategory] = useState(filters.category||"");
   const [condition, setCondition] = useState(filters.condition||'');
   const [sortBy, setSortBy] = useState("newest");
+  const [page, setPage] = useState(filters.page||1);
   const router = useRouter();
 
+  const itemsPerPage = 12;
+  const totalItems = data.total
+  const totalPages = Math.ceil(totalItems/itemsPerPage);
+
+
+
+  
+  const getPageNumbers = () => {
+    const pages =[1,2,3,4,5,6,7,8]
+    return pages
+  }
+
+  const startItem =  (page-1)*itemsPerPage+1;
+  const endItem = Math.min(page*itemsPerPage);
   useEffect(() => {
-    const approvedProducts = data.filter(
+    const approvedProducts = data.result.filter(
       (product) => product.status === "Approved",
     );
 
@@ -40,10 +57,13 @@ export default function BrowseProducts({ filters,data }) {
     if (condition !== "") {
       sp.set("condition", condition);
     }
+    if(page){
+      sp.set('page',page)
+    }
     console.log("search", sp.toString());
     const path = `?${sp.toString()}`;
     router.push(path);
-  }, [category,searchTerm, router,condition]);
+  }, [category,page,searchTerm, router,condition]);
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white p-6">
@@ -86,12 +106,12 @@ export default function BrowseProducts({ filters,data }) {
             className="bg-zinc-900 border border-emerald-600/30 rounded-2xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500"
           >
             <option value="">All Categories</option>
-            <option value="Mobile">Mobile</option>
-            <option value="Laptop">Laptop</option>
             <option value="Electronics">Electronics</option>
-            <option value="Furniture">Furniture</option>
             <option value="Fashion">Fashion</option>
+            <option value="Books">Books</option>
+            <option value="Vehicles">Vehicles</option>
             <option value="Sports">Sports</option>
+            <option value="Others">Others</option>
           </select>
 
           {/* Condition */}
@@ -125,27 +145,30 @@ export default function BrowseProducts({ filters,data }) {
         </div>
 
         {/* Products */}
+        <>
+        
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map((product) => (
+          {filteredProducts?.map((product) => (
             <div
-              key={product._id}
-              className="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 hover:border-emerald-500 transition-all duration-300 group"
+            key={product._id}
+            className="bg-zinc-900 rounded-3xl overflow-hidden border border-zinc-800 hover:border-emerald-500 transition-all duration-300 group"
             >
               <div className="relative">
                 <img
                   src={product.images?.[0] || "/placeholder.png"}
                   alt={product.title}
                   className="w-full aspect-4/3 object-cover group-hover:scale-105 transition duration-300"
-                />
+                  />
 
                 <div
                   className={`absolute top-3 left-3 px-3 py-1 text-xs font-medium rounded-full ${
                     product.condition === "New" ||
                     product.condition === "Like-New"
-                      ? "bg-emerald-500 text-black"
-                      : "bg-amber-500 text-black"
+                    ? "bg-emerald-500 text-black"
+                    : "bg-amber-500 text-black"
                   }`}
-                >
+                  >
                   {product.condition}
                 </div>
 
@@ -188,14 +211,50 @@ export default function BrowseProducts({ filters,data }) {
                   <button
                     onClick={() => toast.success("Added to wishlist ❤️")}
                     className="px-4 border border-zinc-700 hover:bg-zinc-800 rounded-2xl transition-all"
-                  >
+                    >
                     <Heart size={20} className="text-emerald-400" />
                   </button>
                 </div>
               </div>
             </div>
-          ))}
+          ))
+        }
+            
         </div>
+
+        </>
+         <Pagination className="w-full">
+      <Pagination.Summary>
+        Showing {startItem}-{endItem} of {totalItems} results
+      </Pagination.Summary>
+      <Pagination.Content>
+        <Pagination.Item>
+          <Pagination.Previous isDisabled={page === 1} onPress={() => setPage((p) => p - 1)}>
+            <Pagination.PreviousIcon />
+            <span>Previous</span>
+          </Pagination.Previous>
+        </Pagination.Item>
+        {getPageNumbers().map((p, i) =>
+          p === "ellipsis" ? (
+            <Pagination.Item key={`ellipsis-${i}`}>
+              <Pagination.Ellipsis />
+            </Pagination.Item>
+          ) : (
+            <Pagination.Item key={p}>
+              <Pagination.Link isActive={p === page} onPress={() => setPage(p)}>
+                {p}
+              </Pagination.Link>
+            </Pagination.Item>
+          ),
+        )}
+        <Pagination.Item>
+          <Pagination.Next isDisabled={page === totalPages} onPress={() => setPage((p) => p + 1)}>
+            <span>Next</span>
+            <Pagination.NextIcon />
+          </Pagination.Next>
+        </Pagination.Item>
+      </Pagination.Content>
+    </Pagination>
 
         {filteredProducts.length === 0 && (
           <div className="text-center py-20">

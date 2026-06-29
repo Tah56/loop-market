@@ -17,7 +17,7 @@ export default function AppNavbar() {
 
   const menuItems = [
     { label: "Home", href: "/" },
-    { label: "Browse Items", href: "/allproduct" },
+    { label: "Browse Items", href: "/allproduct?page=1" },
     { label: "Categories", href: "/categories" },
     { label: "About Us", href: "/about-us" },
     { label: "Contact", href: "/contact" },

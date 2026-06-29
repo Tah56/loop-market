@@ -1,11 +1,10 @@
 import AdminAnalytics from '@/component/AdminAnalyticsPage';
-import UnauthorizedPage from '@/component/UnAuthorize';
 import React from 'react';
 
 const page = () => {
     return (
         <div>
-           <AdminAnalytics></AdminAnalytics>
+            <AdminAnalytics/>
         </div>
     );
 };
