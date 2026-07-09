@@ -74,7 +74,7 @@ cd loopmarket
 
 npm install
 
-### Project Structure
+## Project Structure
 loopmarket/
 ├── app/                    # Next.js App Router pages & API routes
 ├── components/             # Reusable UI components
@@ -87,12 +87,12 @@ loopmarket/
 ├── README.md
 └── .env.local
 
-### Design Theme
+## Design Theme
  Dark Mode with vibrant Green Apple accents (emerald-500, emerald-600)
 Clean, modern, and fully responsive UI
 Consistent experience across Buyer, Seller, and Admin panels
 
-### 🤝 Contributing
+## 🤝 Contributing
 We welcome contributions! Please follow these steps:
 
 1.Fork the repository
