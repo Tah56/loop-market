@@ -68,7 +68,7 @@ LoopMarket is a full-stack marketplace where people can buy and sell quality sec
 ### Installation
 
 1. Clone the repository
-```bash
+bash
 git clone https://github.com/yourusername/loopmarket.git
 cd loopmarket
 
