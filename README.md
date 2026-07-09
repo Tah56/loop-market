@@ -1,36 +1,101 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# LoopMarket - Second Hand Marketplace
 
-## Getting Started
+A modern, sustainable platform for buying and selling pre-owned goods.
 
-First, run the development server:
+![LoopMarket Banner](https://via.placeholder.com/1200x400/10b981/ffffff?text=LoopMarket+-+Sustainable+Marketplace)
 
+## 🌱 About LoopMarket
+
+LoopMarket is a full-stack marketplace where people can buy and sell quality second-hand products. Our mission is to reduce waste, save money, and promote sustainable consumption through a trusted community-driven platform.
+
+**"Give items a second life"**
+
+---
+
+## ✨ Key Features
+
+### For Buyers
+- Browse thousands of second-hand items
+- Advanced search & filters (category, condition, price)
+- Secure checkout with Stripe
+- Order tracking
+- Wishlist & Buyer Protection (100% Guaranteed)
+
+### For Sellers
+- Easy product listing with multiple images
+- Admin approval system
+- Order management dashboard
+- Performance analytics
+- Secure payments
+
+### For Admins
+- Full platform moderation
+- User management & verification
+- Product review system
+- Comprehensive analytics dashboard
+- Reports & insights
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend:**
+- Next.js 14 (App Router)
+- React + Tailwind CSS
+- Framer Motion (animations)
+- Recharts (analytics charts)
+- Lucide React (icons)
+
+**Backend:**
+- Node.js + Express
+- MongoDB + Mongoose
+
+**Payments:**
+- Stripe Checkout
+
+**Image Upload:**
+- ImgBB API
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+
+- MongoDB
+- Stripe Account
+
+### Installation
+
+1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/yourusername/loopmarket.git
+cd loopmarket
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+npm install
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Project Structure
+loopmarket/
+├── app/                    # Next.js App Router pages & API routes
+├── components/             # Reusable UI components
+├── dashboard/              # Role-based dashboards
+│   ├── admin/
+│   ├── seller/
+│   └── buyer/
+├── lib/                    # Auth, database, utilities
+├── public/                 # Static assets
+├── README.md
+└── .env.local
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Design Theme
+ Dark Mode with vibrant Green Apple accents (emerald-500, emerald-600)
+Clean, modern, and fully responsive UI
+Consistent experience across Buyer, Seller, and Admin panels
 
-## Learn More
+### 🤝 Contributing
+We welcome contributions! Please follow these steps:
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.Fork the repository
+2.Create a feature branch
+3.Make your changes
+4.Submit a Pull Request
